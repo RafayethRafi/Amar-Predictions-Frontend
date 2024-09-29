@@ -1,4 +1,6 @@
 import React from 'react';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const CricketCard = ({ 
   id, 
@@ -12,36 +14,40 @@ const CricketCard = ({
   isShowingReview 
 }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 w-full text-black">
-      <h2 className="text-2xl font-semibold mb-2">{title}</h2>
-      <p className="text-gray-600 mb-4">{description}</p>
-      {isShowingReview && (
-        <div className="mb-4 bg-gray-100 p-4 rounded">
-          <h3 className="font-semibold mb-2">Review:</h3>
-          {review ? (
-            <div dangerouslySetInnerHTML={{ __html: review }} />
-          ) : (
-            <p>No review available.</p>
-          )}
-        </div>
-      )}
-      <div className="flex justify-end space-x-4">
-        <button
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-muted-foreground mb-4">{description}</p>
+        {isShowingReview && (
+          <div className="mb-4 bg-muted p-4 rounded">
+            <h3 className="font-semibold mb-2">Review:</h3>
+            {review ? (
+              <div dangerouslySetInnerHTML={{ __html: review }} />
+            ) : (
+              <p>No review available.</p>
+            )}
+          </div>
+        )}
+      </CardContent>
+      <CardFooter className="flex justify-end space-x-4">
+        <Button
           onClick={onShowReviewClick}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          variant="outline"
         >
           {isShowingReview ? "Hide Review" : "Show Review"}
-        </button>
+        </Button>
         {isAdmin && !isEditing && (
-          <button
+          <Button
             onClick={onEditClick}
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            variant="default"
           >
             Edit Review
-          </button>
+          </Button>
         )}
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };
 

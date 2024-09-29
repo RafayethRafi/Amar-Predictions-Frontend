@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const QuillNoSSRWrapper = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -21,37 +23,41 @@ const ReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
   };
 
   return (
-    <div className="mt-4 bg-white p-4 rounded-lg shadow-md text-black">
-      <h3 className="text-lg font-semibold mb-2">Edit Review</h3>
-      <QuillNoSSRWrapper
-        value={content}
-        onChange={setContent}
-        modules={{
-          toolbar: [
-            [{ header: [1, 2, false] }],
-            ["bold", "italic", "underline", "strike", "blockquote"],
-            [{ list: "ordered" }, { list: "bullet" }],
-            ["link", "image"],
-            ["clean"],
-          ],
-        }}
-        className="bg-white mb-4"
-      />
-      <div className="mt-4 space-x-2">
-        <button
+    <Card>
+      <CardHeader>
+        <CardTitle>Edit Review</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <QuillNoSSRWrapper
+          value={content}
+          onChange={setContent}
+          modules={{
+            toolbar: [
+              [{ header: [1, 2, false] }],
+              ["bold", "italic", "underline", "strike", "blockquote"],
+              [{ list: "ordered" }, { list: "bullet" }],
+              ["link", "image"],
+              ["clean"],
+            ],
+          }}
+          className="bg-background mb-4"
+        />
+      </CardContent>
+      <CardFooter className="flex justify-end space-x-2">
+        <Button
           onClick={handleSubmit}
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300"
+          variant="default"
         >
           Submit Review
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={onCancel}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+          variant="secondary"
         >
           Cancel
-        </button>
-      </div>
-    </div>
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 

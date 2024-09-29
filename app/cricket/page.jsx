@@ -94,13 +94,13 @@ export default function Cricket() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8 text-center">Cricket Insights</h1>
-      {reviews.length === 0 && <p>No reviews available</p>}
+      {reviews.length === 0 && <p className="text-center text-muted-foreground">No reviews available</p>}
       <div className="space-y-6">
         {cricketData.map((item) => {
           const matchId = `${item.title}_${getCurrentDate()}`;

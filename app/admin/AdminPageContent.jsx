@@ -6,8 +6,8 @@ const AdminPageContent = ({ auth }) => {
   const api = process.env.NEXT_PUBLIC_API_URL;
 
   return (
-    <div className="container mx-auto px-4 py-12 bg-gray-100 min-h-screen">
-      <h1 className="text-4xl font-bold mb-12 text-center text-gray-800">Admin Dashboard</h1>
+    <div className="container mx-auto px-4 py-12 bg-background min-h-screen">
+      <h1 className="text-4xl font-bold mb-12 text-center">Admin Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <Card>
           <CardHeader>

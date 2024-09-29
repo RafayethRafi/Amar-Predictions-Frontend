@@ -22,7 +22,7 @@ export default function HomePage() {
       try {
         const headers = {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          // 'Authorization': `Bearer ${token}`,
         };
 
         const [heroRes, cricketRes, footballRes] = await Promise.all([
@@ -56,9 +56,9 @@ export default function HomePage() {
       }
     };
 
-    if (token) {
+ 
       fetchImages();
-    }
+    
   }, [token, api]);
 
   if (error) {

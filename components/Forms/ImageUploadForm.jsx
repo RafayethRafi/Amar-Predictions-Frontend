@@ -41,7 +41,7 @@ const ImageUploadForm = ({ endpoint, token }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="altText" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="altText" className="block text-sm font-medium mb-1">
           Alt Text:
         </label>
         <Input
@@ -54,7 +54,7 @@ const ImageUploadForm = ({ endpoint, token }) => {
         />
       </div>
       <div>
-        <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="image" className="block text-sm font-medium mb-1">
           Image:
         </label>
         <Input

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import useAuth from '@/lib/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { Menu, LogOut, LogIn, UserPlus, Home, Shield, X } from 'lucide-react';
+import { ThemeToggle } from './ThemeToggle';
 
 const Navbar = () => {
   const { login, logout, authenticated, user } = useAuth();
@@ -26,10 +27,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gray-800 shadow-lg">
+    <nav className="bg-background border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
-          <Link href="/" className="text-white font-bold text-xl hover:text-gray-300 transition duration-300">
+          <Link href="/" className="text-foreground font-bold text-xl hover:text-primary transition duration-300">
             Amar Predictions
           </Link>
           
@@ -46,7 +47,7 @@ const Navbar = () => {
                 <NavLink href="/football" icon={<span className="mr-1">⚽</span>}>Football</NavLink>
                 <button
                   onClick={handleLogout}
-                  className="text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition duration-300 flex items-center space-x-1"
+                  className="text-foreground hover:text-primary hover:bg-secondary px-3 py-2 rounded-md text-sm font-medium transition duration-300 flex items-center space-x-1"
                 >
                   <LogOut size={18} />
                   <span>Logout</span>
@@ -60,12 +61,14 @@ const Navbar = () => {
                 <NavLink href="/register" icon={<UserPlus size={18} />}>Register</NavLink>
               </>
             )}
+            <ThemeToggle />
           </div>
           
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center">
+            <ThemeToggle />
             <button 
               onClick={toggleMenu}
-              className="text-gray-300 hover:text-white hover:bg-gray-700 p-2 rounded-md transition duration-300"
+              className="text-foreground hover:text-primary hover:bg-secondary p-2 rounded-md transition duration-300 ml-2"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -89,7 +92,7 @@ const Navbar = () => {
                 <MobileNavLink href="/football" icon={<span className="mr-1">⚽</span>}>Football</MobileNavLink>
                 <button
                   onClick={handleLogout}
-                  className="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium w-full text-left transition duration-300"
+                  className="text-foreground hover:text-primary hover:bg-secondary block px-3 py-2 rounded-md text-base font-medium w-full text-left transition duration-300"
                 >
                   <span className="flex items-center">
                     <LogOut size={18} className="mr-2" />
@@ -115,7 +118,7 @@ const Navbar = () => {
 const NavLink = ({ href, children, icon }) => (
   <Link 
     href={href} 
-    className="text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition duration-300 flex items-center space-x-1"
+    className="text-foreground hover:text-primary hover:bg-secondary px-3 py-2 rounded-md text-sm font-medium transition duration-300 flex items-center space-x-1"
   >
     {icon}
     <span>{children}</span>
@@ -125,7 +128,7 @@ const NavLink = ({ href, children, icon }) => (
 const MobileNavLink = ({ href, children, icon }) => (
   <Link 
     href={href} 
-    className="text-gray-300 hover:text-white hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium transition duration-300"
+    className="text-foreground hover:text-primary hover:bg-secondary block px-3 py-2 rounded-md text-base font-medium transition duration-300"
   >
     <span className="flex items-center">
       {icon}
