@@ -38,9 +38,9 @@ async function getImages() {
 export default async function HomePage() {
   const images = await getImages();
 
-  if (!images) {
-    return <div className="text-center text-red-500 mt-4">Failed to load images. Please try again later.</div>;
-  }
+  // if (!images) {
+  //   return <div className="text-center text-red-500 mt-4">Failed to load images. Please try again later.</div>;
+  // }
 
   return (
     <div className="min-h-screen flex flex-col">
