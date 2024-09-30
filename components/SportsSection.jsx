@@ -1,6 +1,12 @@
-import Image from 'next/image';
+'use client'
 
-export default function SportsSection({ title, image, buttonText }) {
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
+export default function SportsSection({ title, image, buttonText ,href}) {
+
+  const router = useRouter();
+
   const renderImage = () => {
     if (!image || !image.image) {
       return (
@@ -39,7 +45,8 @@ export default function SportsSection({ title, image, buttonText }) {
       </div>
       <div className="absolute top-0 right-0 bottom-0 w-full md:w-1/2 flex flex-col items-start justify-center p-6 text-white">
         <h2 className="text-3xl font-bold mb-4">{title}</h2>
-        <button className="bg-white text-black py-2 px-4 rounded hover:bg-gray-200 transition-colors">
+        <button className="bg-white text-black py-2 px-4 rounded hover:bg-gray-200 transition-colors"
+        onClick={()=>router.push(href)}>
           {buttonText}
         </button>
       </div>

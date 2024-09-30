@@ -48,11 +48,13 @@ export default async function HomePage() {
           title="Cricket" 
           image={images.cricket} 
           buttonText="Explore Cricket"
+          href="cricket"
         />
         <SportsSection 
           title="Football" 
           image={images.football} 
           buttonText="Discover Football"
+          href="football"
         />
       </div>
       <ReviewSection />
