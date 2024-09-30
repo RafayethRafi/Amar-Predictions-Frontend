@@ -3,31 +3,31 @@ import Image from 'next/image';
 export default function SportsSection({ title, image, buttonText }) {
   const renderImage = () => {
     if (!image || !image.image) {
-      return null;
-    }
-
-    if (typeof image.image === 'string') {
       return (
-        <div className="relative w-full h-full bg-gray-200 dark:bg-gray-800">
-          <img 
-            src={`data:image/png;base64,${image.image}`}
-            alt={image.altText || `${title} image`}
-            className="object-contain w-full h-full"
-          />
+        <div className="w-full h-full bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
+          <span className="text-gray-500 dark:text-gray-400">No image available</span>
         </div>
       );
     }
 
-    return (
-      <div className="relative w-full h-full bg-gray-200 dark:bg-gray-800">
-        <Image
-          src={image.image}
+    if (typeof image.image === 'string') {
+      return (
+        <img 
+          src={`data:image/png;base64,${image.image}`}
           alt={image.altText || `${title} image`}
-          layout="fill"
-          objectFit="contain"
-          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover w-full h-full"
         />
-      </div>
+      );
+    }
+
+    return (
+      <Image
+        src={image.image}
+        alt={image.altText || `${title} image`}
+        layout="fill"
+        objectFit="cover"
+        sizes="(max-width: 768px) 100vw, 50vw"
+      />
     );
   };
 

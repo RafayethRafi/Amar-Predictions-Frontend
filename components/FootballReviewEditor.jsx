@@ -10,14 +10,12 @@ const QuillNoSSRWrapper = dynamic(() => import("react-quill"), {
   loading: () => <p>Loading editor...</p>,
 });
 
-const ReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
+const FootballReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
   const [review, setReview] = useState(initialValue || {
     team1: "",
     team2: "",
     score1: "",
     score2: "",
-    wicket1: "",
-    wicket2: "",
     content: "",
   });
 
@@ -39,16 +37,14 @@ const ReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
   const handleSubmit = () => {
     onSubmit({
       ...review,
-      score1: parseInt(review.score1) || 0,
-      score2: parseInt(review.score2) || 0,
-      wicket1: parseInt(review.wicket1) || 0,
-      wicket2: parseInt(review.wicket2) || 0,
+      score1: parseInt(review.score1) || null,
+      score2: parseInt(review.score2) || null,
     });
   };
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold mb-4">{initialValue ? "Edit Review" : "Create Review"}</h2>
+      <h2 className="text-2xl font-bold mb-4">{initialValue ? "Edit Football Review" : "Create Football Review"}</h2>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="team1">Team 1</Label>
@@ -90,28 +86,6 @@ const ReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
             value={review.score2}
             onChange={handleInputChange}
             placeholder="Score 2"
-          />
-        </div>
-        <div>
-          <Label htmlFor="wicket1">Wickets 1</Label>
-          <Input
-            id="wicket1"
-            name="wicket1"
-            type="number"
-            value={review.wicket1}
-            onChange={handleInputChange}
-            placeholder="Wickets 1"
-          />
-        </div>
-        <div>
-          <Label htmlFor="wicket2">Wickets 2</Label>
-          <Input
-            id="wicket2"
-            name="wicket2"
-            type="number"
-            value={review.wicket2}
-            onChange={handleInputChange}
-            placeholder="Wickets 2"
           />
         </div>
       </div>
@@ -160,11 +134,11 @@ const ReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
           Cancel
         </Button>
         <Button onClick={handleSubmit} variant="default">
-          {initialValue ? "Update Review" : "Submit Review"}
+          {initialValue ? "Update Football Review" : "Submit Football Review"}
         </Button>
       </div>
     </div>
   );
 };
 
-export default ReviewEditor;
+export default FootballReviewEditor;

@@ -3,22 +3,20 @@ import Image from 'next/image';
 export default function HeroSection({ image }) {
   const renderImage = () => {
     if (!image || !image.image) {
-      return null;
-    }
-
-    if (typeof image.image === 'string' ) {
       return (
-        <img 
-          src={`data:image/png;base64,${image.image}`}
-          alt={image.altText || "Hero image"}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <div className="absolute inset-0 bg-gray-300 dark:bg-gray-700 flex items-center justify-center">
+          <span className="text-gray-500 dark:text-gray-400">No image available</span>
+        </div>
       );
     }
 
+    const imageUrl = typeof image.image === 'string' 
+      ? `data:image/png;base64,${image.image}`
+      : image.image;
+
     return (
       <Image
-        src={image.image}
+        src={imageUrl}
         alt={image.altText || "Hero image"}
         layout="fill"
         objectFit="cover"
