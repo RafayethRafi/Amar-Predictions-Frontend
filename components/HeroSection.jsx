@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 export default function HeroSection({ image }) {
   const renderImage = () => {
     if (!image || !image.image) {
@@ -15,12 +13,10 @@ export default function HeroSection({ image }) {
       : image.image;
 
     return (
-      <Image
+      <img
         src={imageUrl}
         alt={image.altText || "Hero image"}
-        layout="fill"
-        objectFit="cover"
-        priority
+        className="absolute inset-0 w-full h-full object-cover"
       />
     );
   };
