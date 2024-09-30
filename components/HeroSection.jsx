@@ -11,7 +11,7 @@ export default function HeroSection({ image }) {
     }
 
     const imageUrl = typeof image.image === 'string' 
-      ? data:image/png;base64,${image.image}
+      ? `data:image/png;base64,${image.image}`
       : image.image;
 
     return (
