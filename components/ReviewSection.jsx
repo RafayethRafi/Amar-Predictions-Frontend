@@ -1,8 +1,8 @@
 export default function ReviewSection() {
   const reviews = [
-    { id: 1, text: "Great experience!", author: "John Doe" },
-    { id: 2, text: "Loved the games!", author: "Jane Smith" },
-    { id: 3, text: "Will definitely come back!", author: "Bob Johnson" },
+    { id: 1, text: "Great Predictions!", author: "Sanoar Hossain" },
+    { id: 2, text: "Loved the Insights", author: "King Rafi" },
+    { id: 3, text: "I keep coming back to this", author: "Kazi Afsar" },
   ];
 
   return (

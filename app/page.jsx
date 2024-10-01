@@ -104,7 +104,7 @@ export default function HomePage() {
         />
       </div>
       <ReviewSection />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

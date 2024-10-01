@@ -19,10 +19,10 @@ import {
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2 } from "lucide-react"
+import { Loader2, AlertCircle } from "lucide-react"
 
 const loginSchema = z.object({
-  username: z.string().min(1, "Username is required"),
+  username: z.string().min(1, "Email is required"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 })
 
@@ -32,6 +32,7 @@ export default function LoginForm() {
   const router = useRouter()
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
+  const [authError, setAuthError] = useState("")
 
   const {
     register,
@@ -43,6 +44,7 @@ export default function LoginForm() {
 
   async function onSubmit(data) {
     setLoading(true)
+    setAuthError("") // Clear any previous auth errors
 
     const formdata = new FormData()
     formdata.append("username", data.username)
@@ -55,6 +57,11 @@ export default function LoginForm() {
       })
 
       const res = await response.json()
+
+      if (response.status === 403) {
+        setAuthError("The email or password is incorrect")
+        throw new Error("The email or password is incorrect")
+      }
 
       if (response.ok) {
         const userData = await fetch(`${api}/users/me`, {
@@ -79,11 +86,13 @@ export default function LoginForm() {
         throw new Error(res.detail || "Login failed")
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      })
+      if (!authError) {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        })
+      }
       logout()
     } finally {
       setLoading(false)
@@ -101,13 +110,19 @@ export default function LoginForm() {
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-4">
+              {authError && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{authError}</AlertDescription>
+                </Alert>
+              )}
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username">Email</Label>
                 <Input
                   id="username"
                   type="text"
                   {...register("username")}
-                  placeholder="Enter your username"
+                  placeholder="Enter your Email"
                   aria-invalid={errors.username ? "true" : "false"}
                 />
                 {errors.username && (
