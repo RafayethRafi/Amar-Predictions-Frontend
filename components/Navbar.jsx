@@ -41,10 +41,12 @@ const Navbar = () => {
               <NavLink href="/admin" icon={<Shield size={18} />}>Admin</NavLink>
             )}
             
-            {authenticated && (
-              <>
+           
+             
                 <NavLink href="/cricket" icon={<span className="mr-1">🏏</span>}>Cricket</NavLink>
                 <NavLink href="/football" icon={<span className="mr-1">⚽</span>}>Football</NavLink>
+                {authenticated && (
+                <>
                 <button
                   onClick={handleLogout}
                   className="text-foreground hover:text-primary hover:bg-secondary px-3 py-2 rounded-md text-sm font-medium transition duration-300 flex items-center space-x-1"
@@ -86,10 +88,11 @@ const Navbar = () => {
               <MobileNavLink href="/admin" icon={<Shield size={18} />}>Admin</MobileNavLink>
             )}
             
-            {authenticated && (
-              <>
+          
                 <MobileNavLink href="/cricket" icon={<span className="mr-1">🏏</span>}>Cricket</MobileNavLink>
                 <MobileNavLink href="/football" icon={<span className="mr-1">⚽</span>}>Football</MobileNavLink>
+                {authenticated && (
+              <>
                 <button
                   onClick={handleLogout}
                   className="text-foreground hover:text-primary hover:bg-secondary block px-3 py-2 rounded-md text-base font-medium w-full text-left transition duration-300"
