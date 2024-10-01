@@ -19,18 +19,8 @@ export default function Cricket() {
   const [selectedReview, setSelectedReview] = useState(null);
 
   const fetchReviews = useCallback(async () => {
-    if (!token) {
-      console.log('Token not available, skipping fetch');
-      return;
-    }
-
     try {
-      const response = await fetch(`${api}/admin/cricket_reviews`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        }
-      });
-
+      const response = await fetch(`${api}/admin/cricket_reviews`);
       if (!response.ok) throw new Error('Failed to fetch reviews');
       const data = await response.json();
       setReviews(data);
@@ -42,13 +32,11 @@ export default function Cricket() {
         variant: "destructive",
       });
     }
-  }, [token]);
+  }, []);
 
   useEffect(() => {
-    if (!isLoading && token) {
-      fetchReviews();
-    }
-  }, [isLoading, token, fetchReviews]);
+    fetchReviews();
+  }, [fetchReviews]);
 
   const handleReviewSubmit = async (reviewData) => {
     if (!token) {
