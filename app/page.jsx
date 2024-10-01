@@ -93,13 +93,13 @@ export default function HomePage() {
         <SportsSection 
           title="Cricket" 
           image={images.cricket} 
-          buttonText="Explore Cricket"
+          buttonText="Explore Cricket Predictions"
           href="/cricket"
         />
         <SportsSection 
           title="Football" 
           image={images.football} 
-          buttonText="Discover Football"
+          buttonText="Explore Football Predictions"
           href="/football"
         />
       </div>

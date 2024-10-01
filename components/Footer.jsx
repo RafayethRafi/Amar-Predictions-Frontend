@@ -56,10 +56,10 @@ export default function Footer() {
           <div>
             <h4 className="text-xl font-semibold mb-4">Contact Us</h4>
             <div className="space-y-2">
-              <p className="flex items-center">
+              {/* <p className="flex items-center">
                 <Phone className="mr-2" size={18} />
                 <span>01682934506</span>
-              </p>
+              </p> */}
               <p className="flex items-center">
                 <Mail className="mr-2" size={18} />
                 <a href="mailto:info@gamezone.com" className="hover:text-gray-300 transition-colors">

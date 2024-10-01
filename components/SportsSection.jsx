@@ -1,9 +1,9 @@
 'use client'
 
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function SportsSection({ title, image, buttonText, href }) {
-
   const router = useRouter();
 
   const renderImage = () => {
@@ -29,18 +29,17 @@ export default function SportsSection({ title, image, buttonText, href }) {
   };
 
   return (
-    <div className="relative w-full">
+    <Link href={href} className="relative w-full block">
       <div className="aspect-w-16 aspect-h-9 overflow-hidden">
         {renderImage()}
         <div className="absolute inset-0 bg-black bg-opacity-30 pointer-events-none" />
       </div>
-      <div className="absolute top-0 right-0 bottom-0 w-full md:w-1/2 flex flex-col items-start justify-center p-6 text-white">
-        <h2 className="text-3xl font-bold mb-4">{title}</h2>
-        <button className="bg-white text-black py-2 px-4 rounded hover:bg-gray-200 transition-colors"
-          onClick={() => router.push(href)}>
+      <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-white">
+        <h2 className="text-3xl font-bold mb-4">{title.toUpperCase()}</h2>
+        <button className="bg-white font-semibold text-black py-2 px-4 rounded hover:bg-gray-200 transition-colors">
           {buttonText}
         </button>
       </div>
-    </div>
+    </Link>
   );
 }
