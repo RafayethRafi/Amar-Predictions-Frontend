@@ -107,7 +107,7 @@ export default function ReviewPage() {
   }
 
 return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto  py-6">
         <h1 className="text-4xl font-bold mb-8 text-center">{review.team1} vs {review.team2}</h1>
         {isEditing ? (
             <ReviewEditor
@@ -116,8 +116,8 @@ return (
                 onCancel={() => setIsEditing(false)}
             />
         ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <div className="flex justify-between mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md px-2 py-6">
+                {/* <div className="flex justify-between mb-8">
                     <div>
                         <h2 className="text-2xl font-bold">{review.team1}</h2>
                         {!(review.score1 === 0 && review.wicket1 === 0) && (
@@ -130,7 +130,7 @@ return (
                             <p className="text-xl">{review.score2}/{review.wicket2}</p>
                         )}
                     </div>
-                </div>
+                </div> */}
                 <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: review.content }} />
                 {user?.isAdmin && (
                     <div className="mt-6 flex justify-end space-x-4">
