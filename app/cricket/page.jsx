@@ -21,7 +21,7 @@ export default function LeaguesPage() {
 
   const fetchLeagues = useCallback(async () => {
     try {
-      const response = await fetch(`${api}/admin/leagues`);
+      const response = await fetch(`${api}/admin/cricket_leagues`);
       if (!response.ok) throw new Error('Failed to fetch leagues');
       const data = await response.json();
       setLeagues(data);
