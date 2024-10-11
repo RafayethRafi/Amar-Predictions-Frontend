@@ -20,34 +20,43 @@ export default function LeagueInsightsPage() {
   const [isCreating, setIsCreating] = useState(false);
   const [editingReviewId, setEditingReviewId] = useState(null);
 
-const fetchLeague = useCallback(async () => {
-  if (!token) {
-    console.log('Token not available, cannot fetch league');
-    return;
-  }
-
-  try {
-    const response = await fetch(`${api}/admin/league/${id}`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,  // Include the token in the Authorization header
-        'Content-Type': 'application/json'
+  const fetchLeague = useCallback(async () => {
+    // if (!token) {
+    //   console.log('Token not available, cannot fetch league');
+    //   return;
+    // }
+  
+    try {
+      console.log(`Fetching league with ID: ${id}`);
+      const response = await fetch(`${api}/admin/league/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Server response:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorData
+        });
+        throw new Error(`Failed to fetch league: ${response.status} ${response.statusText}`);
       }
-    });
-
-    if (!response.ok) throw new Error('Failed to fetch league');
-    
-    const data = await response.json();
-    setLeague(data);  // Set the league data
-  } catch (error) {
-    console.error('Error fetching league:', error);
-    toast({
-      title: "Error",
-      description: "Failed to fetch league. Please try again.",
-      variant: "destructive",
-    });
-  }
-}, [id, token]);
+      
+      const data = await response.json();
+      console.log('Received league data:', data);
+      setLeague(data);
+    } catch (error) {
+      console.error('Error fetching league:', error);
+      toast({
+        title: "Error",
+        description: `Failed to fetch league: ${error.message}`,
+        variant: "destructive",
+      });
+    }
+  }, [id, token]);
 
 
 const fetchReviews = useCallback(async () => {
