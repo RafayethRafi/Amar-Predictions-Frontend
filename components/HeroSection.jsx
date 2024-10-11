@@ -4,13 +4,13 @@ import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 
 export default function HeroSection({ image }) {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <div className="relative h-[40vh] sm:h-[40vh] md:h-[50vh] lg:h-[70vh] w-full">
       {image && image.image ? (
         <img
-          src={typeof image.image === 'string' ? `data:image/png;base64,${image.image}` : image.image}
+          src={`data:image/png;base64,${image.image}`}  // Ensure the correct Base64 format
           alt={image.altText || "Hero image"}
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -39,5 +39,5 @@ export default function HeroSection({ image }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

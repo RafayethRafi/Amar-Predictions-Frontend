@@ -21,8 +21,9 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2, AlertCircle } from "lucide-react"
 
+// Define validation schema
 const loginSchema = z.object({
-  username: z.string().min(1, "Email is required"),
+  email: z.string().min(1, "Email is required"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 })
 
@@ -45,59 +46,65 @@ export default function LoginForm() {
   async function onSubmit(data) {
     setLoading(true)
     setAuthError("") // Clear any previous auth errors
-
-    const formdata = new FormData()
-    formdata.append("username", data.username)
-    formdata.append("password", data.password)
-
+  
     try {
       const response = await fetch(`${api}/login`, {
         method: "POST",
-        body: formdata,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
       })
-
+  
       const res = await response.json()
-
+  
       if (response.status === 403) {
         setAuthError("The email or password is incorrect")
         throw new Error("The email or password is incorrect")
       }
-
-      if (response.ok) {
-        const userData = await fetch(`${api}/users/me`, {
-          headers: {
-            Authorization: `Bearer ${res?.access_token}`,
-          },
+  
+      if (!response.ok) {
+        // Handle non-200 errors
+        const errorMessage = res.detail || "Login failed. Please try again."
+        setAuthError(errorMessage)
+        throw new Error(errorMessage)
+      }
+  
+      // Fetch user data after successful login
+      const userData = await fetch(`${api}/users/me`, {
+        headers: {
+          Authorization: `Bearer ${res?.token || res?.access_token}`, // Handle different token key names
+        },
+      })
+  
+      if (userData.status === 200) {
+        const user = await userData.json()
+        login(res?.token || res?.access_token, user)
+        toast({
+          title: "Success",
+          description: "Successfully Logged In",
+          variant: "success",
         })
-
-        if (userData.status === 200) {
-          const data = await userData.json()
-          login(res?.access_token, data)
-          toast({
-            title: "Success",
-            description: "Successfully Logged In",
-            variant: "success",
-          })
-          router.push("/")
-        } else {
-          throw new Error("Failed to fetch user data")
-        }
+        router.push("/")
       } else {
-        throw new Error(res.detail || "Login failed")
+        throw new Error("Failed to fetch user data.")
       }
     } catch (error) {
-      if (!authError) {
-        toast({
-          title: "Error",
-          description: error.message,
-          variant: "destructive",
-        })
-      }
+      setAuthError(error.message || "An error occurred during login.")
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      })
       logout()
     } finally {
       setLoading(false)
     }
   }
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background">
@@ -117,17 +124,17 @@ export default function LoginForm() {
                 </Alert>
               )}
               <div className="space-y-2">
-                <Label htmlFor="username">Email</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
-                  id="username"
+                  id="email"
                   type="text"
-                  {...register("username")}
+                  {...register("email")}
                   placeholder="Enter your Email"
-                  aria-invalid={errors.username ? "true" : "false"}
+                  aria-invalid={errors.email ? "true" : "false"}
                 />
-                {errors.username && (
+                {errors.email && (
                   <Alert variant="destructive">
-                    <AlertDescription>{errors.username.message}</AlertDescription>
+                    <AlertDescription>{errors.email.message}</AlertDescription>
                   </Alert>
                 )}
               </div>

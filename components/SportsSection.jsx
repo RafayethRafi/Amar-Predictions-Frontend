@@ -1,11 +1,10 @@
 'use client'
 
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function SportsSection({ title, image, buttonText, href }) {
-  const router = useRouter();
 
+  // Render the image if it exists, otherwise display a placeholder
   const renderImage = () => {
     if (!image || !image.image) {
       return (
@@ -15,9 +14,7 @@ export default function SportsSection({ title, image, buttonText, href }) {
       );
     }
 
-    const imageUrl = typeof image.image === 'string'
-      ? `data:image/png;base64,${image.image}`
-      : image.image;
+    const imageUrl = `data:image/png;base64,${image.image}`; // Ensure Base64 format is correct
 
     return (
       <img

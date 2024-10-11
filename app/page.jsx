@@ -8,14 +8,13 @@ import Footer from '@/components/Footer';
 
 const getImages = async () => {
   const api = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-  console.log("Fetching images from API:", api);
-  
+
   const endpoints = [
     '/users/main_background_image',
     '/users/cricket_background_image',
     '/users/football_background_image'
   ];
-  
+
   try {
     const responses = await Promise.all(
       endpoints.map(endpoint => 
@@ -27,17 +26,19 @@ const getImages = async () => {
         })
       )
     );
-    
+
     const data = await Promise.all(
       responses.map(async (response) => {
         if (!response.ok) {
           console.error(`Failed to fetch: ${response.url}, Status: ${response.status}`);
           return null;
         }
-        return response.json();
+        const jsonData = await response.json();
+        console.log('Fetched data:', jsonData);  // Log the fetched data
+        return jsonData;
       })
     );
-    
+
     return {
       hero: data[0],
       cricket: data[1],
@@ -52,6 +53,7 @@ const getImages = async () => {
     };
   }
 };
+
 
 export default function HomePage() {
   const [images, setImages] = useState({

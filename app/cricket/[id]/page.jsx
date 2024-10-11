@@ -20,39 +20,58 @@ export default function LeagueInsightsPage() {
   const [isCreating, setIsCreating] = useState(false);
   const [editingReviewId, setEditingReviewId] = useState(null);
 
-  const fetchLeague = useCallback(async () => {
-    try {
-      const response = await fetch(`${api}/admin/league/${id}`);
-      if (!response.ok) throw new Error('Failed to fetch league');
-      const data = await response.json();
-      setLeague(data);
-    } catch (error) {
-      console.error('Error fetching league:', error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch league. Please try again.",
-        variant: "destructive",
-      });
-    }
-  }, [id]);
+const fetchLeague = useCallback(async () => {
+  if (!token) {
+    console.log('Token not available, cannot fetch league');
+    return;
+  }
 
-  const fetchReviews = useCallback(async () => {
-    try {
-      const response = await fetch(`${api}/admin/cricket_reviews`);
-      if (!response.ok) throw new Error('Failed to fetch reviews');
-      const data = await response.json();
-      // Filter reviews for the current league
-    //   const filteredReviews = data.filter(review => review.league_id === parseInt(id));
-      setReviews(data);
-    } catch (error) {
-      console.error('Error fetching reviews:', error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch reviews. Please try again.",
-        variant: "destructive",
-      });
-    }
-  }, [id]);
+  try {
+    const response = await fetch(`${api}/admin/league/${id}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,  // Include the token in the Authorization header
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch league');
+    
+    const data = await response.json();
+    setLeague(data);  // Set the league data
+  } catch (error) {
+    console.error('Error fetching league:', error);
+    toast({
+      title: "Error",
+      description: "Failed to fetch league. Please try again.",
+      variant: "destructive",
+    });
+  }
+}, [id, token]);
+
+
+const fetchReviews = useCallback(async () => {
+  try {
+    const response = await fetch(`${api}/admin/cricket_reviews`);
+    if (!response.ok) throw new Error('Failed to fetch reviews');
+    
+    const data = await response.json();
+
+    // Log the response to ensure the correct data structure
+    console.log('Fetched reviews:', data);
+
+    // Ensure that 'reviews' is an array and set it in the state
+    setReviews(Array.isArray(data.reviews) ? data.reviews : []);
+  } catch (error) {
+    console.error('Error fetching reviews:', error);
+    toast({
+      title: "Error",
+      description: "Failed to fetch reviews. Please try again.",
+      variant: "destructive",
+    });
+  }
+}, [id]);
+
 
   useEffect(() => {
     fetchLeague();
@@ -167,7 +186,7 @@ export default function LeagueInsightsPage() {
         />
       )}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {reviews.map((review) => (
+        {reviews.length > 0 && reviews.map((review) => (
           <CricketCard
             key={review.id}
             review={review}
