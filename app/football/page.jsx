@@ -1,102 +1,118 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from "react";
-import FootballCard from "@/components/FootballCard";
-import FootballReviewEditor from "@/components/FootballReviewEditor";
+import { useRouter } from 'next/navigation';
+import LeagueCard from "@/components/LeagueCard";
+import LeagueEditor from "@/components/LeagueEditor";
 import useAuth from "@/lib/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const api = process.env.NEXT_PUBLIC_API_URL;
 
-export default function Football() {
+export default function LeaguesPage() {
   const { user, token, isLoading } = useAuth();
-  const [reviews, setReviews] = useState([]);
-  const [isCreating, setIsCreating] = useState(false);
-  const [editingReviewId, setEditingReviewId] = useState(null);
+  const router = useRouter();
+  const { toast } = useToast();
+  const [leagues, setLeagues] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedReview, setSelectedReview] = useState(null);
+  const [editingLeagueId, setEditingLeagueId] = useState(null);
 
-  const fetchReviews = useCallback(async () => {
+  const fetchLeagues = useCallback(async () => {
     try {
-      const response = await fetch(`${api}/admin/football_reviews`);
-      if (!response.ok) throw new Error('Failed to fetch reviews');
+      const response = await fetch(`${api}/admin/football_leagues`);
+      if (!response.ok) throw new Error('Failed to fetch leagues');
       const data = await response.json();
-      setReviews(data);
+      setLeagues(data);
     } catch (error) {
-      console.error('Error fetching reviews:', error);
+      console.error('Error fetching leagues:', error);
       toast({
         title: "Error",
-        description: "Failed to fetch reviews. Please try again.",
+        description: "Failed to fetch leagues. Please try again.",
         variant: "destructive",
       });
     }
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
-    fetchReviews();
-  }, [fetchReviews]);
+    fetchLeagues();
+  }, [fetchLeagues]);
 
-  const handleReviewSubmit = async (reviewData) => {
+  const handleLeagueSubmit = async (leagueData) => {
     if (!token) {
-      console.log('Token not available, cannot submit review');
+      console.log('Token not available, cannot submit league');
       return;
     }
-
     try {
-      const url = editingReviewId 
-        ? `${api}/admin/edit_football_review?review_id_to_edit=${editingReviewId}`
-        : `${api}/admin/post_football_review`;
-
+      const url = editingLeagueId 
+        ? `${api}/admin/edit_league?league_id_to_edit=${editingLeagueId}`
+        : `${api}/admin/create_league`;
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(reviewData)
+        body: JSON.stringify(leagueData)
       });
-
-      if (!response.ok) throw new Error('Failed to submit review');
-      
-      await fetchReviews();
-      setIsCreating(false);
-      setEditingReviewId(null);
+      if (!response.ok) throw new Error('Failed to submit league');
+      await fetchLeagues();
       setIsDialogOpen(false);
       toast({
         title: "Success",
-        description: editingReviewId ? "Review updated successfully" : "Review created successfully",
+        description: editingLeagueId ? "League updated successfully" : "League created successfully",
       });
     } catch (error) {
-      console.error('Error submitting review:', error);
+      console.error('Error submitting league:', error);
       toast({
         title: "Error",
-        description: "Failed to submit review. Please try again.",
+        description: "Failed to submit league. Please try again.",
         variant: "destructive",
       });
     }
   };
 
   const handleEditClick = (id) => {
-    setEditingReviewId(id);
-    setIsCreating(false);
-    setSelectedReview(null);
+    setEditingLeagueId(id);
     setIsDialogOpen(true);
   };
 
   const handleCreateClick = () => {
-    setIsCreating(true);
-    setEditingReviewId(null);
-    setSelectedReview(null);
+    setEditingLeagueId(null);
     setIsDialogOpen(true);
   };
 
-  const handleShowReview = (review) => {
-    setSelectedReview(review);
-    setEditingReviewId(null);
-    setIsCreating(false);
-    setIsDialogOpen(true);
+  const handleDeleteLeague = async (id) => {
+    if (!token) {
+      console.log('Token not available, cannot delete league');
+      return;
+    }
+    try {
+      const response = await fetch(`${api}/admin/delete_league?league_id_to_delete=${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) throw new Error('Failed to delete league');
+      setLeagues(prevLeagues => prevLeagues.filter(league => league.id !== id));
+      toast({
+        title: "Success",
+        description: "League deleted successfully",
+      });
+    } catch (error) {
+      console.error('Error deleting league:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete league. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleViewInsights = (id) => {
+    router.push(`/football/${id}`);
   };
 
   if (isLoading) {
@@ -105,42 +121,37 @@ export default function Football() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Football Insights</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center">Football Leagues</h1>
       {user?.isAdmin && (
         <div className="mb-6">
           <Button onClick={handleCreateClick} className="w-full">
-            Create New Review
+            Create New League
           </Button>
         </div>
       )}
-      {reviews.length === 0 && !isCreating && (
-        <p className="text-center text-muted-foreground">No reviews available</p>
+      {leagues.length === 0 && (
+        <p className="text-center text-muted-foreground">No leagues available</p>
       )}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {reviews.map((review) => (
-          <FootballCard
-            key={review.id}
-            review={review}
+        {leagues.map((league) => (
+          <LeagueCard
+            key={league.id}
+            league={league}
             isAdmin={user?.isAdmin}
-            onEditClick={() => handleEditClick(review.id)}
-            onShowReview={() => handleShowReview(review)}
+            onEditClick={() => handleEditClick(league.id)}
+            onDeleteClick={() => handleDeleteLeague(league.id)}
+            onViewInsights={() => handleViewInsights(league.id)}
           />
         ))}
       </div>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="sm:max-w-[425px] bg-background dark:bg-gray-800">
-          {editingReviewId || isCreating ? (
-            <FootballReviewEditor
-              initialValue={editingReviewId ? reviews.find(r => r.id === editingReviewId) : null}
-              onSubmit={handleReviewSubmit}
-              onCancel={() => setIsDialogOpen(false)}
-            />
-          ) : selectedReview && (
-            <div className="p-4">
-              <h2 className="text-2xl font-bold mb-4">{selectedReview.team1} vs {selectedReview.team2}</h2>
-              <div className="prose dark:prose-invert" dangerouslySetInnerHTML={{ __html: selectedReview.content }} />
-            </div>
-          )}
+          <LeagueEditor
+            initialValue={editingLeagueId ? leagues.find(l => l.id === editingLeagueId) : null}
+            onSubmit={handleLeagueSubmit}
+            onCancel={() => setIsDialogOpen(false)}
+            sport_type="football"
+          />
         </DialogContent>
       </Dialog>
     </div>

@@ -3,11 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const LeagueEditor = ({ initialValue, onSubmit, onCancel }) => {
-  const [league, setLeague] = useState(initialValue || {
-    name: "",
-    sport_type: "",
-  });
+const LeagueEditor = ({ initialValue, onSubmit, onCancel, sport_type }) => {
+  const [league, setLeague] = useState(initialValue || { name: "", sport_type: sport_type });
 
   useEffect(() => {
     if (initialValue) {
@@ -29,22 +26,12 @@ const LeagueEditor = ({ initialValue, onSubmit, onCancel }) => {
       <h2 className="text-2xl font-bold mb-4">{initialValue ? "Edit League" : "Create League"}</h2>
       <div>
         <Label htmlFor="name">League Name</Label>
-        <Input
-          id="name"
-          name="name"
-          value={league.name}
-          onChange={handleInputChange}
-          placeholder="League Name"
-        />
-      </div>
-      <div>
-        <Label htmlFor="sport_type">Sport Type</Label>
-        <Input
-          id="sport_type"
-          name="sport_type"
-          value={league.sport_type}
-          onChange={handleInputChange}
-          placeholder="Sport Type"
+        <Input 
+          id="name" 
+          name="name" 
+          value={league.name} 
+          onChange={handleInputChange} 
+          placeholder="League Name" 
         />
       </div>
       <div className="flex justify-end space-x-2">

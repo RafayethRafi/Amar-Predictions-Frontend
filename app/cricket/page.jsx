@@ -6,7 +6,7 @@ import LeagueCard from "@/components/LeagueCard";
 import LeagueEditor from "@/components/LeagueEditor";
 import useAuth from "@/lib/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const api = process.env.NEXT_PUBLIC_API_URL;
@@ -14,10 +14,10 @@ const api = process.env.NEXT_PUBLIC_API_URL;
 export default function LeaguesPage() {
   const { user, token, isLoading } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
   const [leagues, setLeagues] = useState([]);
-  const [isCreating, setIsCreating] = useState(false);
-  const [editingLeagueId, setEditingLeagueId] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingLeagueId, setEditingLeagueId] = useState(null);
 
   const fetchLeagues = useCallback(async () => {
     try {
@@ -33,7 +33,7 @@ export default function LeaguesPage() {
         variant: "destructive",
       });
     }
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
     fetchLeagues();
@@ -44,12 +44,10 @@ export default function LeaguesPage() {
       console.log('Token not available, cannot submit league');
       return;
     }
-
     try {
       const url = editingLeagueId 
         ? `${api}/admin/edit_league?league_id_to_edit=${editingLeagueId}`
         : `${api}/admin/create_league`;
-
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -58,12 +56,8 @@ export default function LeaguesPage() {
         },
         body: JSON.stringify(leagueData)
       });
-
       if (!response.ok) throw new Error('Failed to submit league');
-      
       await fetchLeagues();
-      setIsCreating(false);
-      setEditingLeagueId(null);
       setIsDialogOpen(false);
       toast({
         title: "Success",
@@ -81,12 +75,10 @@ export default function LeaguesPage() {
 
   const handleEditClick = (id) => {
     setEditingLeagueId(id);
-    setIsCreating(false);
     setIsDialogOpen(true);
   };
 
   const handleCreateClick = () => {
-    setIsCreating(true);
     setEditingLeagueId(null);
     setIsDialogOpen(true);
   };
@@ -96,7 +88,6 @@ export default function LeaguesPage() {
       console.log('Token not available, cannot delete league');
       return;
     }
-
     try {
       const response = await fetch(`${api}/admin/delete_league?league_id_to_delete=${id}`, {
         method: 'DELETE',
@@ -104,10 +95,8 @@ export default function LeaguesPage() {
           'Authorization': `Bearer ${token}`,
         },
       });
-
       if (!response.ok) throw new Error('Failed to delete league');
-      
-      await fetchLeagues();
+      setLeagues(prevLeagues => prevLeagues.filter(league => league.id !== id));
       toast({
         title: "Success",
         description: "League deleted successfully",
@@ -140,7 +129,7 @@ export default function LeaguesPage() {
           </Button>
         </div>
       )}
-      {leagues.length === 0 && !isCreating && (
+      {leagues.length === 0 && (
         <p className="text-center text-muted-foreground">No leagues available</p>
       )}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -161,6 +150,7 @@ export default function LeaguesPage() {
             initialValue={editingLeagueId ? leagues.find(l => l.id === editingLeagueId) : null}
             onSubmit={handleLeagueSubmit}
             onCancel={() => setIsDialogOpen(false)}
+            sport_type="cricket"
           />
         </DialogContent>
       </Dialog>

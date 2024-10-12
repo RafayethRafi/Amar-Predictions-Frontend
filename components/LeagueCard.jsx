@@ -22,12 +22,11 @@ const LeagueCard = ({ league, isAdmin, onEditClick, onDeleteClick, onViewInsight
         </CardTitle>
       </CardHeader>
       <CardContent className="pt-6 flex flex-col">
-        {/* <p className="text-lg font-semibold">{league.sport_type}</p> */}
+        {/* Add any additional league information here if needed */}
       </CardContent>
       <CardFooter>
         <Button onClick={onViewInsights} variant="outline" className="w-full">
-          <Eye className="h-4 w-4 mr-2" />
-          View Matches
+          <Eye className="h-4 w-4 mr-2" /> View Matches
         </Button>
       </CardFooter>
     </Card>

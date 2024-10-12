@@ -3,8 +3,6 @@ import ImageUploadForm from '@/components/Forms/ImageUploadForm';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const AdminPageContent = ({ auth }) => {
-  const api = process.env.NEXT_PUBLIC_API_URL;
-
   return (
     <div className="container mx-auto px-4 py-12 bg-background min-h-screen">
       <h1 className="text-4xl font-bold mb-12 text-center">Admin Dashboard</h1>

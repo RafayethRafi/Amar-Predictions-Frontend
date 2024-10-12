@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from 'next/navigation';
-import CricketReviewEditor from "@/components/CricketReviewEditor";
+import FootballReviewEditor from "@/components/FootballReviewEditor";
 import useAuth from "@/lib/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -20,11 +20,12 @@ export default function ReviewPage() {
 
   const fetchReview = useCallback(async () => {
     try {
-      const response = await fetch(`${api}/admin/cricket_review/${reviewId}`);
+      const response = await fetch(`${api}/admin/football_review/${reviewId}`);
       if (!response.ok) throw new Error('Failed to fetch review');
       const data = await response.json();
       setReview(data);
       
+      // if score1 and score2 are present, then it is a football review
         if (data.wicket1 && data.wicket2) {
             setSportType("cricket");
         }
@@ -51,7 +52,7 @@ export default function ReviewPage() {
       return;
     }
     try {
-      const response = await fetch(`${api}/admin/edit_cricket_review?review_id_to_edit=${reviewId}`, {
+      const response = await fetch(`${api}/admin/edit_football_review?review_id_to_edit=${reviewId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -82,7 +83,7 @@ export default function ReviewPage() {
       return;
     }
     try {
-      const response = await fetch(`${api}/admin/delete_cricket_review?review_id_to_delete=${reviewId}`, {
+      const response = await fetch(`${api}/admin/delete_football_review?review_id_to_delete=${reviewId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -112,7 +113,7 @@ export default function ReviewPage() {
     <div className="container mx-auto py-6">
       <h1 className="text-4xl font-bold mb-8 text-center">{review.team1} vs {review.team2}</h1>
       {isEditing ? (
-        <CricketReviewEditor
+        <FootballReviewEditor
           initialValue={review}
           onSubmit={handleReviewSubmit}
           onCancel={() => setIsEditing(false)}

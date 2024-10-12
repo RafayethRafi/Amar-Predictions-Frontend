@@ -3,12 +3,13 @@
 import React from 'react';
 import useAuth from '@/lib/hooks/useAuth';
 import AdminPageContent from '@/app/admin/AdminPageContent';
+import Loading from '@/components/Loading';
 
 const AdminPageClient = () => {
   const auth = useAuth();
 
   if (!auth) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!auth.user || !auth.user.isAdmin) {

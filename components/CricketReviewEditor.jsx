@@ -10,7 +10,7 @@ const QuillNoSSRWrapper = dynamic(() => import("react-quill"), {
   loading: () => <p>Loading editor...</p>,
 });
 
-const ReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
+const CricketReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
   const [review, setReview] = useState(initialValue || {
     team1: "",
     team2: "",
@@ -52,67 +52,27 @@ const ReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="team1">Team 1</Label>
-          <Input
-            id="team1"
-            name="team1"
-            value={review.team1}
-            onChange={handleInputChange}
-            placeholder="Team 1 Name"
-          />
+          <Input id="team1" name="team1" value={review.team1} onChange={handleInputChange} placeholder="Team 1 Name" />
         </div>
         <div>
           <Label htmlFor="team2">Team 2</Label>
-          <Input
-            id="team2"
-            name="team2"
-            value={review.team2}
-            onChange={handleInputChange}
-            placeholder="Team 2 Name"
-          />
+          <Input id="team2" name="team2" value={review.team2} onChange={handleInputChange} placeholder="Team 2 Name" />
         </div>
         <div>
           <Label htmlFor="score1">Score 1</Label>
-          <Input
-            id="score1"
-            name="score1"
-            type="number"
-            value={review.score1}
-            onChange={handleInputChange}
-            placeholder="Score 1"
-          />
+          <Input id="score1" name="score1" type="number" value={review.score1} onChange={handleInputChange} placeholder="Score 1" />
         </div>
         <div>
           <Label htmlFor="score2">Score 2</Label>
-          <Input
-            id="score2"
-            name="score2"
-            type="number"
-            value={review.score2}
-            onChange={handleInputChange}
-            placeholder="Score 2"
-          />
+          <Input id="score2" name="score2" type="number" value={review.score2} onChange={handleInputChange} placeholder="Score 2" />
         </div>
         <div>
           <Label htmlFor="wicket1">Wickets 1</Label>
-          <Input
-            id="wicket1"
-            name="wicket1"
-            type="number"
-            value={review.wicket1}
-            onChange={handleInputChange}
-            placeholder="Wickets 1"
-          />
+          <Input id="wicket1" name="wicket1" type="number" value={review.wicket1} onChange={handleInputChange} placeholder="Wickets 1" />
         </div>
         <div>
           <Label htmlFor="wicket2">Wickets 2</Label>
-          <Input
-            id="wicket2"
-            name="wicket2"
-            type="number"
-            value={review.wicket2}
-            onChange={handleInputChange}
-            placeholder="Wickets 2"
-          />
+          <Input id="wicket2" name="wicket2" type="number" value={review.wicket2} onChange={handleInputChange} placeholder="Wickets 2" />
         </div>
       </div>
       <div>
@@ -167,4 +127,4 @@ const ReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
   );
 };
 
-export default ReviewEditor;
+export default CricketReviewEditor;

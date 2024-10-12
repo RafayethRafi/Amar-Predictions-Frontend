@@ -1,18 +1,17 @@
-import { Inter, Montserrat } from "next/font/google";
-import "./globals.css";
-import AuthProvider from "@/Provider/AuthProvider";
-import Navbar from "@/components/Navbar";
-import { ThemeProvider } from "@/Provider/ThemeProvider";
-import Footer from "@/components/Footer";
+import { Inter, Montserrat } from "next/font/google"
+import "./globals.css"
+import { ThemeProvider } from "@/Provider/ThemeProvider"
+import Navbar from "@/components/Navbar"
+import Footer from "@/components/Footer"
+import AuthProvider from "@/Provider/AuthProvider"
 
-// Import Montserrat font
-const inter = Inter({ subsets: ["latin"] });
-const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "500", "700"] });
+const inter = Inter({ subsets: ["latin"] })
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "500", "700"] })
 
 export const metadata = {
   title: "Amar Predictions",
   description: "Baler Bagh",
-};
+}
 
 export default function RootLayout({ children }) {
   return (
@@ -29,5 +28,5 @@ export default function RootLayout({ children }) {
         </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

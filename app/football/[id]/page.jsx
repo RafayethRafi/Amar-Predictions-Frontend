@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from 'next/navigation';
-import CricketCard from "@/components/CricketCard";
-import CricketReviewEditor from "@/components/CricketReviewEditor";
+import FootballCard from "@/components/FootballCard";
+import FootballReviewEditor from "@/components/FootballReviewEditor";
 import useAuth from "@/lib/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -38,7 +38,7 @@ export default function LeagueInsightsPage() {
 
   const fetchReviews = useCallback(async () => {
     try {
-      const response = await fetch(`${api}/admin/cricket_reviews?league_id=${id}`);
+      const response = await fetch(`${api}/admin/football_reviews?league_id=${id}`);
       if (!response.ok) throw new Error('Failed to fetch reviews');
       const data = await response.json();
       setReviews(Array.isArray(data.reviews) ? data.reviews : []);
@@ -65,8 +65,8 @@ export default function LeagueInsightsPage() {
 
     try {
       const url = editingReviewId 
-        ? `${api}/admin/edit_cricket_review?review_id_to_edit=${editingReviewId}`
-        : `${api}/admin/post_cricket_review?league_id=${id}`;
+        ? `${api}/admin/edit_football_review?review_id_to_edit=${editingReviewId}`
+        : `${api}/admin/post_football_review?league_id=${id}`;
 
       const response = await fetch(url, {
         method: 'POST',
@@ -103,7 +103,7 @@ export default function LeagueInsightsPage() {
     }
 
     try {
-      const response = await fetch(`${api}/admin/delete_cricket_review?review_id_to_delete=${reviewId}`, {
+      const response = await fetch(`${api}/admin/delete_football_review?review_id_to_delete=${reviewId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -155,7 +155,7 @@ export default function LeagueInsightsPage() {
         <p className="text-center text-muted-foreground">No reviews available for this league</p>
       )}
       {isCreating && (
-        <CricketReviewEditor
+        <FootballReviewEditor
           initialValue={editingReviewId ? reviews.find(r => r.id === editingReviewId) : null}
           onSubmit={handleReviewSubmit}
           onCancel={() => {
@@ -166,13 +166,13 @@ export default function LeagueInsightsPage() {
       )}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {reviews.length > 0 && reviews.map((review) => (
-          <CricketCard
+          <FootballCard
             key={review.id}
             review={review}
             isAdmin={user?.isAdmin}
             onEditClick={() => handleEditClick(review.id)}
             onDeleteClick={() => handleDeleteReview(review.id)}
-            onShowReview={() => router.push(`/cricket/${id}/reviews/${review.id}`)}
+            onShowReview={() => router.push(`/football/${id}/reviews/${review.id}`)}
           />
         ))}
       </div>
