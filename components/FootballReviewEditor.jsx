@@ -4,6 +4,7 @@ import "react-quill/dist/quill.snow.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { match } from "assert";
 
 const QuillNoSSRWrapper = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -17,6 +18,7 @@ const FootballReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
     score1: "",
     score2: "",
     content: "",
+    match_type: "",
   });
 
   useEffect(() => {
@@ -89,6 +91,16 @@ const FootballReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
           />
         </div>
       </div>
+      <div>
+          <Label htmlFor="match_type">Match Type</Label>
+          <Input
+            id="match_type"
+            name="match_type"
+            value={review.match_type}
+            onChange={handleInputChange}
+            placeholder="Match Type"
+          />
+        </div>
       <div>
         <Label>Review Content</Label>
         <div className="bg-white dark:bg-gray-700 rounded-md mt-1">

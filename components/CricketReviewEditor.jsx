@@ -19,6 +19,7 @@ const CricketReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
     wicket1: "",
     wicket2: "",
     content: "",
+    match_type: "",
   });
 
   useEffect(() => {
@@ -71,10 +72,14 @@ const CricketReviewEditor = ({ initialValue, onSubmit, onCancel }) => {
           <Input id="wicket1" name="wicket1" type="number" value={review.wicket1} onChange={handleInputChange} placeholder="Wickets 1" />
         </div>
         <div>
-          <Label htmlFor="wicket2">Wickets 2</Label>
+          <Label htmlFor="Wickets 2">Wickets 2</Label>
           <Input id="wicket2" name="wicket2" type="number" value={review.wicket2} onChange={handleInputChange} placeholder="Wickets 2" />
         </div>
       </div>
+      <div>
+          <Label htmlFor="match_type">Match Type</Label>
+          <Input id="match_type" name="match_type" value={review.match_type} onChange={handleInputChange} placeholder="Match Type" />
+        </div>
       <div>
         <Label>Review Content</Label>
         <div className="bg-white dark:bg-gray-700 rounded-md mt-1">
